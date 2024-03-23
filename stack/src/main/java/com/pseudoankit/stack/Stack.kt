@@ -8,7 +8,7 @@ import com.pseudoankit.stack.model.StackScope
 import com.pseudoankit.stack.model.stackScope
 
 @Composable
-fun Stack(
+public fun Stack(
     holder: StackHolder,
     modifier: Modifier = Modifier,
     content: @Composable StackScope.() -> Unit

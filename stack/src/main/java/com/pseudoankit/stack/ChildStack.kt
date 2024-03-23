@@ -13,7 +13,7 @@ import com.pseudoankit.stack.ui.HandleChildState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StackScope.ChildStack(
+public fun StackScope.ChildStack(
     holder: ChildStackHolder,
     modifier: Modifier = Modifier,
     previous: @Composable () -> Unit,

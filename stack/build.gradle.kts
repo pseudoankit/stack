@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -36,6 +38,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+}
+
+kotlin {
+    explicitApi = ExplicitApiMode.Strict
 }
 
 dependencies {

@@ -3,6 +3,6 @@ package com.pseudoankit.stack.model
 import androidx.compose.runtime.Stable
 
 @Stable
-interface StackScope
+public interface StackScope
 
-val stackScope = object : StackScope {}
+internal val stackScope = object : StackScope {}

@@ -11,14 +11,14 @@ import kotlinx.coroutines.launch
 // TODO can we remove overhead of passing child holder by client
 
 @Composable
-fun rememberStackHolder(
+public fun rememberStackHolder(
     @IntRange(MIN_CHILD_COUNT, MAX_CHILD_COUNT) childCount: Int
 ): StackHolder {
     return StackHolder(childCount = childCount)
 }
 
 @Stable
-class StackHolder internal constructor(
+public class StackHolder internal constructor(
     private val childCount: Int
 ) {
 
@@ -35,22 +35,22 @@ class StackHolder internal constructor(
 
     private val childStackHolders = List(childCount) { ChildStackHolder() }
 
-    val first = getChild(0)
-    val second = getChild(1)
-    val third = getChild(2)
-    val fourth = getChild(3)
+    public val first: ChildStackHolder = getChild(0)
+    public val second: ChildStackHolder = getChild(1)
+    public val third: ChildStackHolder = getChild(2)
+    public val fourth: ChildStackHolder = getChild(3)
 
-    suspend fun next() {
+    public suspend fun next() {
         activeChildIndex++
         updateChildHolders()
     }
 
-    suspend fun previous() {
+    public suspend fun previous() {
         activeChildIndex--
         updateChildHolders()
     }
 
-    suspend fun close() {
+    public suspend fun close() {
         activeChildIndex = -1
         updateChildHolders()
     }

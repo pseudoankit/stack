@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 @Preview
 @Composable
-fun StackDemo() {
+public fun StackDemo() {
     val coroutineScope = rememberCoroutineScope()
     val stackHolder = rememberStackHolder(childCount = 4)
     val next: () -> Unit = {

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 @Stable
-class ChildStackHolder internal constructor() {
+public class ChildStackHolder internal constructor() {
 
     private val _sheetState = MutableSharedFlow<SheetState>()
     internal val sheetState: SharedFlow<SheetState> get() = _sheetState
