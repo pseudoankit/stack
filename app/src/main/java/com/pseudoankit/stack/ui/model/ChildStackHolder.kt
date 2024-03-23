@@ -11,34 +11,33 @@ import androidx.compose.runtime.State as ComposeState
 class ChildStackHolder internal constructor() {
 
     private val _sheetState = MutableSharedFlow<SheetState>()
-    val sheetState: SharedFlow<SheetState> get() = _sheetState
+    internal val sheetState: SharedFlow<SheetState> get() = _sheetState
 
     private val _sheetContent = mutableStateOf(SheetContent.Upcoming)
-    val sheetContent: ComposeState<SheetContent> get() = _sheetContent
+    internal val sheetContent: ComposeState<SheetContent> get() = _sheetContent
 
-    fun moveToBackStack() {
-
+    internal suspend fun moveToBackStack() {
     }
 
-    fun show() {
-
+    internal suspend fun show() {
+        _sheetState.emit(SheetState.Expanded)
     }
 
-    fun showNext() {
-
+    internal suspend fun showNext() {
+        _sheetState.emit(SheetState.PartiallyExpanded)
     }
 
-    fun hide() {
-
+    internal suspend fun hide() {
+        _sheetState.emit(SheetState.Hidden)
     }
 
-    enum class SheetState {
+    internal enum class SheetState {
         Expanded,
         Hidden,
         PartiallyExpanded
     }
 
-    enum class SheetContent {
+    internal enum class SheetContent {
         BackStack,
         Visible,
         Upcoming

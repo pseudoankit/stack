@@ -19,12 +19,12 @@ class StackHolder internal constructor() {
         ChildStackHolder(),
     )
 
-    val first get() = childrens[0]
-    val second get() = childrens[0]
-    val third get() = childrens[0]
-    val fourth get() = childrens[0]
+    val first = childrens[0]
+    val second = childrens[1]
+    val third = childrens[2]
+    val fourth = childrens[3]
 
-    fun next() {
+    suspend fun next() {
         activeChildIndex++
 
         childrens.getOrNull(activeChildIndex - 1)?.moveToBackStack()
@@ -32,14 +32,14 @@ class StackHolder internal constructor() {
         childrens.getOrNull(activeChildIndex + 1)?.showNext()
     }
 
-    fun previous() {
+    suspend fun previous() {
         activeChildIndex--
 
         childrens.getOrNull(activeChildIndex + 1)?.showNext()
         childrens.getOrNull(activeChildIndex)?.show()
     }
 
-    fun close() {
+    suspend fun close() {
 
     }
 }
