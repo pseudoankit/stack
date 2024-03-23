@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import androidx.compose.runtime.State as ComposeState
 
-
 @Stable
 class ChildStackHolder internal constructor() {
 
@@ -15,6 +14,7 @@ class ChildStackHolder internal constructor() {
 
     private val _sheetContent = mutableStateOf(SheetContent.Upcoming)
     internal val sheetContent: ComposeState<SheetContent> get() = _sheetContent
+
 
     internal suspend fun moveToBackStack() {
     }

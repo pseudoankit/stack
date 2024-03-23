@@ -2,21 +2,15 @@
 
 package com.pseudoankit.stack
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.pseudoankit.stack.model.ChildStackHolder
 import com.pseudoankit.stack.model.StackScope
-import kotlinx.coroutines.flow.collectLatest
+import com.pseudoankit.stack.ui.ChildStackInternal
+import com.pseudoankit.stack.ui.HandleChildState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StackScope.ChildStack(
     holder: ChildStackHolder,
@@ -26,46 +20,9 @@ fun StackScope.ChildStack(
     content: @Composable () -> Unit,
 ) {
 
-    val sheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.Hidden,
-            skipHiddenState = false
-        )
-    )
-    HandleState(holder = holder, bottomSheetState = sheetScaffoldState.bottomSheetState)
+    ChildStackInternal { sheetScaffoldState ->
+        HandleChildState(holder = holder, bottomSheetState = sheetScaffoldState.bottomSheetState)
 
-    BottomSheetScaffold(
-        content = {},
-        sheetContent = {
-            Box(modifier = Modifier.fillMaxSize()) {
-                content()
-            }
-        },
-        modifier = modifier,
-        scaffoldState = sheetScaffoldState
-    )
-}
-
-@Composable
-private fun HandleState(
-    holder: ChildStackHolder,
-    bottomSheetState: SheetState
-) {
-    LaunchedEffect(Unit) {
-        holder.sheetState.collectLatest {
-            when (it) {
-                ChildStackHolder.SheetState.Expanded -> {
-                    bottomSheetState.expand()
-                }
-
-                ChildStackHolder.SheetState.Hidden -> {
-                    bottomSheetState.hide()
-                }
-
-                ChildStackHolder.SheetState.PartiallyExpanded -> {
-                    bottomSheetState.partialExpand()
-                }
-            }
-        }
+        content()
     }
 }
