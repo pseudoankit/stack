@@ -1,6 +1,7 @@
 package com.pseudoankit.stack.ui
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
@@ -12,15 +13,16 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import com.pseudoankit.stack.model.ChildStackHolder
 import kotlinx.coroutines.flow.collectLatest
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ChildStackInternal(
+    peekHeight: Dp,
     modifier: Modifier = Modifier,
-    content: @Composable (BottomSheetScaffoldState) -> Unit,
+    content: @Composable ColumnScope.(BottomSheetScaffoldState) -> Unit,
 ) {
     val sheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
@@ -32,12 +34,14 @@ internal fun ChildStackInternal(
     BottomSheetScaffold(
         content = {},
         sheetContent = {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize()) {
                 content(sheetScaffoldState)
             }
         },
         modifier = modifier,
-        scaffoldState = sheetScaffoldState
+        scaffoldState = sheetScaffoldState,
+        sheetDragHandle = null,
+        sheetPeekHeight = peekHeight
     )
 }
 
@@ -56,10 +60,6 @@ internal fun HandleChildState(
 
                 ChildStackHolder.SheetState.Hidden -> {
                     bottomSheetState.hide()
-                }
-
-                ChildStackHolder.SheetState.PartiallyExpanded -> {
-                    bottomSheetState.partialExpand()
                 }
             }
         }

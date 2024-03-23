@@ -1,10 +1,10 @@
 package com.pseudoankit.stack.model
 
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import androidx.compose.runtime.State as ComposeState
 
 @Stable
 class ChildStackHolder internal constructor() {
@@ -13,18 +13,21 @@ class ChildStackHolder internal constructor() {
     internal val sheetState: SharedFlow<SheetState> get() = _sheetState
 
     private val _sheetContent = mutableStateOf(SheetContent.Upcoming)
-    internal val sheetContent: ComposeState<SheetContent> get() = _sheetContent
+    internal val sheetContent: SheetContent by _sheetContent
 
 
     internal suspend fun moveToBackStack() {
+        _sheetContent.value = SheetContent.BackStack
     }
 
     internal suspend fun show() {
+        _sheetContent.value = SheetContent.Visible
         _sheetState.emit(SheetState.Expanded)
     }
 
     internal suspend fun showNext() {
-        _sheetState.emit(SheetState.PartiallyExpanded)
+        _sheetContent.value = SheetContent.Upcoming
+        _sheetState.emit(SheetState.Hidden)
     }
 
     internal suspend fun hide() {
@@ -34,7 +37,6 @@ class ChildStackHolder internal constructor() {
     internal enum class SheetState {
         Expanded,
         Hidden,
-        PartiallyExpanded
     }
 
     internal enum class SheetContent {
