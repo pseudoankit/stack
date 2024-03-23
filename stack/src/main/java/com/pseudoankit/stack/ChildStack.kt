@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.pseudoankit.stack.ui
+package com.pseudoankit.stack
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +13,8 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import com.pseudoankit.stack.ui.model.ChildStackHolder
-import com.pseudoankit.stack.ui.model.StackScope
+import com.pseudoankit.stack.model.ChildStackHolder
+import com.pseudoankit.stack.model.StackScope
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

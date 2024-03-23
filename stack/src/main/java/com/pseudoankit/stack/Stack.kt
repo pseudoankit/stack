@@ -1,12 +1,11 @@
-package com.pseudoankit.stack.ui
+package com.pseudoankit.stack
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.pseudoankit.stack.ui.model.StackHolder
-import com.pseudoankit.stack.ui.model.StackScope
-import com.pseudoankit.stack.ui.model.stackScope
+import com.pseudoankit.stack.model.StackHolder
+import com.pseudoankit.stack.model.StackScope
+import com.pseudoankit.stack.model.stackScope
 
 @Composable
 fun Stack(

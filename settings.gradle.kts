@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "stack"
 include(":app")
+include(":stack")

@@ -1,4 +1,4 @@
-package com.pseudoankit.stack.ui.model
+package com.pseudoankit.stack.model
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf

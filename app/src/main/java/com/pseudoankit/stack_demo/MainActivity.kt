@@ -1,4 +1,4 @@
-package com.pseudoankit.stack
+package com.pseudoankit.stack_demo
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,9 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import com.pseudoankit.stack.ui.ChildStack
-import com.pseudoankit.stack.ui.Stack
-import com.pseudoankit.stack.ui.model.rememberStackHolder
+import com.pseudoankit.stack.ChildStack
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -29,7 +27,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun StackDemo() {
     val coroutineScope = rememberCoroutineScope()
-    val stackHolder = rememberStackHolder()
+    val stackHolder = com.pseudoankit.stack.model.rememberStackHolder()
 
     Button(onClick = {
         coroutineScope.launch {
@@ -39,7 +37,7 @@ fun StackDemo() {
         Text(text = "Launch")
     }
 
-    Stack(
+    com.pseudoankit.stack.Stack(
         holder = stackHolder
     ) {
         ChildStack(
