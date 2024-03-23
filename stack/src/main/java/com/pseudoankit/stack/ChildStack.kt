@@ -37,8 +37,12 @@ fun StackScope.ChildStack(
             ChildStackHolder.SheetContent.Upcoming -> {
                 next()
             }
+
+            ChildStackHolder.SheetContent.Hidden -> {}
         }
 
-        content()
+        if (holder.sheetContent != ChildStackHolder.SheetContent.Hidden) {
+            content()
+        }
     }
 }
