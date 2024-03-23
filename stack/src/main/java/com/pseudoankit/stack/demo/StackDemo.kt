@@ -10,7 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.pseudoankit.stack.ChildStack
+import com.pseudoankit.stack.BottomSheetChildStack
 import com.pseudoankit.stack.Stack
 import com.pseudoankit.stack.model.ChildStackHolder
 import com.pseudoankit.stack.model.StackScope
@@ -76,7 +76,7 @@ private fun StackScope.ChildStack(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    ChildStack(
+    BottomSheetChildStack(
         holder = holder,
         previous = {
             Text(text = "$step at Backstack")
