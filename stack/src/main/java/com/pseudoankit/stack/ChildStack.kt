@@ -20,7 +20,9 @@ fun StackScope.ChildStack(
     content: @Composable () -> Unit,
 ) {
 
-    ChildStackInternal { sheetScaffoldState ->
+    ChildStackInternal(
+        modifier = modifier
+    ) { sheetScaffoldState ->
         HandleChildState(holder = holder, bottomSheetState = sheetScaffoldState.bottomSheetState)
 
         content()

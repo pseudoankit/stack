@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import com.pseudoankit.stack.util.Constant.MAX_CHILD_COUNT
 import com.pseudoankit.stack.util.Constant.MIN_CHILD_COUNT
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 // TODO can we remove overhead of passing child holder by client
 
@@ -27,6 +29,10 @@ class StackHolder internal constructor(
     }
 
     private var activeChildIndex = -1
+        set(value) {
+            field = value.coerceAtMost(childCount - 1)
+        }
+
     private val childStackHolders = List(childCount) { ChildStackHolder() }
 
     val first = getChild(0)
@@ -36,21 +42,31 @@ class StackHolder internal constructor(
 
     suspend fun next() {
         activeChildIndex++
-
-        childStackHolders.getOrNull(activeChildIndex - 1)?.moveToBackStack()
-        childStackHolders.getOrNull(activeChildIndex)?.show()
-        childStackHolders.getOrNull(activeChildIndex + 1)?.showNext()
+        updateChildHolders()
     }
 
     suspend fun previous() {
         activeChildIndex--
-
-        childStackHolders.getOrNull(activeChildIndex + 1)?.showNext()
-        childStackHolders.getOrNull(activeChildIndex)?.show()
+        updateChildHolders()
     }
 
     suspend fun close() {
+        activeChildIndex = -1
+        updateChildHolders()
+    }
 
+    private suspend fun updateChildHolders() {
+        if (activeChildIndex == -1) {
+            childStackHolders.forEach { it.hide() }
+            return
+        }
+
+        coroutineScope {
+            launch { childStackHolders.getOrNull(activeChildIndex - 1)?.moveToBackStack() }
+            launch { childStackHolders.getOrNull(activeChildIndex)?.show() }
+            launch { childStackHolders.getOrNull(activeChildIndex + 1)?.showNext() }
+            launch { childStackHolders.getOrNull(activeChildIndex + 2)?.hide() }
+        }
     }
 
     private fun getChild(idx: Int): ChildStackHolder {
