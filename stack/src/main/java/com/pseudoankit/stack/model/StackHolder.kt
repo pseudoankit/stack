@@ -19,7 +19,7 @@ public fun rememberStackHolder(
 
 @Stable
 public class StackHolder internal constructor(
-    private val childCount: Int
+    internal val childCount: Int
 ) {
 
     init {
@@ -33,19 +33,19 @@ public class StackHolder internal constructor(
             field = value.coerceAtMost(childCount - 1)
         }
 
-    private val childStackHolders = List(childCount) { ChildStackHolder() }
+    private val childStackHolders = List(childCount) { ChildStackHolder(it) }
 
     public val first: ChildStackHolder = getChild(0)
     public val second: ChildStackHolder = getChild(1)
     public val third: ChildStackHolder = getChild(2)
     public val fourth: ChildStackHolder = getChild(3)
 
-    public suspend fun next() {
+    public suspend fun goNext() {
         activeChildIndex++
         updateChildHolders()
     }
 
-    public suspend fun previous() {
+    public suspend fun goPrevious() {
         activeChildIndex--
         updateChildHolders()
     }
@@ -64,12 +64,12 @@ public class StackHolder internal constructor(
         coroutineScope {
             launch { childStackHolders.getOrNull(activeChildIndex - 1)?.moveToBackStack() }
             launch { childStackHolders.getOrNull(activeChildIndex)?.show() }
-            launch { childStackHolders.getOrNull(activeChildIndex + 1)?.showNext() }
+            launch { childStackHolders.getOrNull(activeChildIndex + 1)?.moveToUpcoming() }
             launch { childStackHolders.getOrNull(activeChildIndex + 2)?.hide() }
         }
     }
 
-    private fun getChild(idx: Int): ChildStackHolder {
+    internal fun getChild(idx: Int): ChildStackHolder {
         require(idx < childCount) {
             "Child ${idx + 1} in stack do not exist, bcz you have specified $childCount child only."
         }

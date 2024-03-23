@@ -23,16 +23,16 @@ public fun StackDemo() {
     val coroutineScope = rememberCoroutineScope()
     val stackHolder = rememberStackHolder(childCount = 4)
     val next: () -> Unit = {
-        coroutineScope.launch { stackHolder.next() }
+        coroutineScope.launch { stackHolder.goNext() }
     }
 
     val previous: () -> Unit = {
-        coroutineScope.launch { stackHolder.previous() }
+        coroutineScope.launch { stackHolder.goPrevious() }
     }
 
     Button(onClick = {
         coroutineScope.launch {
-            stackHolder.next()
+            stackHolder.goNext()
         }
     }) {
         Text(text = "Launch")
