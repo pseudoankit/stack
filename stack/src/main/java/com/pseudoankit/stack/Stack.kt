@@ -18,6 +18,7 @@ public fun Stack(
     holder: StackHolder,
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.Black.copy(.8f),
+    onBackPress: () -> Unit,
     header: @Composable StackScope.() -> Unit = {},
     content: @Composable StackScope.() -> Unit
 ) {
@@ -30,7 +31,8 @@ public fun Stack(
             .background(backgroundColor)
             .then(modifier),
         content = content,
-        header = header
+        header = header,
+        onBackPress = onBackPress
     )
 }
 
@@ -55,5 +57,9 @@ public fun StackScope.HeaderItem(
     contentDescription: String = "",
     onClick: () -> Unit,
 ) {
-    HeaderItemInternal(icon = icon, onClick = onClick, contentDescription = contentDescription)
+    HeaderItemInternal(
+        icon = icon,
+        onClick = onClick,
+        contentDescription = contentDescription
+    )
 }

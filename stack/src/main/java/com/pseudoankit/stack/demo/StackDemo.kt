@@ -74,7 +74,8 @@ private fun PlotStack(
             Header(
                 onCloseClicked = onCloseClicked
             )
-        }
+        },
+        onBackPress = {}
     ) {
         BottomSheet(
             holder = stackHolder.first,

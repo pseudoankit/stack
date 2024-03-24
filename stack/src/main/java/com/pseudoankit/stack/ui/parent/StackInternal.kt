@@ -1,5 +1,6 @@
 package com.pseudoankit.stack.ui.parent
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,11 +15,16 @@ import com.pseudoankit.stack.model.stackScope
 internal fun StackInternal(
     holder: StackHolder,
     modifier: Modifier = Modifier,
+    onBackPress: () -> Unit,
     content: @Composable (StackScope.() -> Unit),
     header: @Composable (StackScope.() -> Unit),
 ) {
     val stackScope = remember(holder) {
         stackScope(holder)
+    }
+
+    if (holder.isVisible) {
+        BackHandler(onBack = onBackPress)
     }
 
     Column(

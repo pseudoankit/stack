@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,7 +47,7 @@ import java.util.Random
 val backgroundColor = Color.Black.copy(alpha = .8f)
 
 @Composable
-fun CredStack() {
+fun BoxScope.CredStack() {
     val stackHolder = rememberStackHolder(childCount = 4)
 
     val coroutineScope = rememberCoroutineScope()
@@ -62,9 +64,19 @@ fun CredStack() {
         stackHolder.show()
     }
 
+    Button(
+        onClick = {
+            coroutineScope.launch { stackHolder.show() }
+        },
+        modifier = Modifier.align(Alignment.Center)
+    ) {
+        Text(text = "Show")
+    }
+
     Stack(
         holder = stackHolder,
-        header = { Header() }
+        header = { Header() },
+        onBackPress = previous
     ) {
         Child1()
         Child2(next = next)
