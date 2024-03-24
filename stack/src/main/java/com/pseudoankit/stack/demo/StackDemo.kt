@@ -1,8 +1,8 @@
 package com.pseudoankit.stack.demo
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,9 +10,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.pseudoankit.stack.BackStackView
 import com.pseudoankit.stack.BottomSheetChildStack
+import com.pseudoankit.stack.ChildSheetContent
 import com.pseudoankit.stack.Root
 import com.pseudoankit.stack.Stack
+import com.pseudoankit.stack.UpcomingView
 import com.pseudoankit.stack.model.ChildStackHolder
 import com.pseudoankit.stack.model.StackScope
 import com.pseudoankit.stack.model.rememberStackHolder
@@ -62,20 +65,19 @@ public fun StackDemo() {
     ) {
         Root(
             backStackView = {
-                Text(text = "First at Backstack")
+                BackStackView {
+                    Text(text = "Moved First at Backstack")
+                }
             },
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Button(onClick = previous) {
-                    Text(text = "Previous")
-                }
                 Text(text = "Root")
                 Button(onClick = next) {
-                    Text(text = "Next")
+                    Text(text = "Go Next")
                 }
             }
         }
@@ -91,23 +93,29 @@ private fun StackScope.BottomSheet(
     BottomSheetChildStack(
         holder = holder,
         backStackView = {
-            Text(text = "$step at Backstack")
+            BackStackView {
+                Text(text = "$step at Backstack")
+            }
         },
         upcomingView = {
-            Text(text = "$step at queue")
+            UpcomingView {
+                Text(text = "$step at queue")
+            }
         }
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(onClick = onPrevious) {
-                Text(text = "Previous")
-            }
-            Text(text = "Step $step")
-            Button(onClick = onNext) {
-                Text(text = "Next")
+        ChildSheetContent {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Step $step")
+                Button(onClick = onPrevious) {
+                    Text(text = "Go Previous")
+                }
+                Button(onClick = onNext) {
+                    Text(text = "Go Next")
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ import com.pseudoankit.stack.model.ChildStackHolder
 import com.pseudoankit.stack.model.StackScope
 import com.pseudoankit.stack.ui.child.BottomSheetChildStackInternal
 import com.pseudoankit.stack.ui.child.ChildStackCore
+import com.pseudoankit.stack.ui.child.CoreChildView
 import kotlinx.coroutines.launch
 
 @Composable
@@ -55,4 +56,28 @@ public fun StackScope.BottomSheetChildStack(
             content = content
         )
     }
+}
+
+@Composable
+public fun StackScope.BackStackView(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    CoreChildView(modifier, content)
+}
+
+@Composable
+public fun StackScope.UpcomingView(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    CoreChildView(modifier, content)
+}
+
+@Composable
+public fun StackScope.ChildSheetContent(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    CoreChildView(modifier, content)
 }
