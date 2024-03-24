@@ -33,7 +33,7 @@ public class StackHolder internal constructor(
             field = value.coerceAtMost(childCount - 1)
         }
 
-    private val childStackHolders = List(childCount) { ChildStackHolder(it) }
+    private val childStackHolders = List(childCount) { ChildStackHolder(it, this) }
 
     public val first: ChildStackHolder = getChild(0)
     public val second: ChildStackHolder = getChild(1)

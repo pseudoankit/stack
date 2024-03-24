@@ -1,6 +1,7 @@
 package com.pseudoankit.stack.ui.child
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -14,10 +15,9 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.pseudoankit.stack.model.ChildStackHolder
 import kotlinx.coroutines.flow.collectLatest
@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.collectLatest
 internal fun BottomSheetChildStackInternal(
     holder: ChildStackHolder,
     modifier: Modifier = Modifier,
+    onDismiss: () -> Unit,
     content: @Composable (ColumnScope.() -> Unit),
 ) {
     val sheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -41,9 +42,13 @@ internal fun BottomSheetChildStackInternal(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .run {
+                if (sheetScaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+                    clickable(onClick = onDismiss)
+                } else this
+            }
             .bottomSheetScrim(
                 sheetState = sheetScaffoldState.bottomSheetState,
-                onDismiss = {}
             )
             .padding(top = holder.topOffset)
     ) {
@@ -57,7 +62,10 @@ internal fun BottomSheetChildStackInternal(
             modifier = modifier,
             scaffoldState = sheetScaffoldState,
             sheetDragHandle = null,
-            sheetPeekHeight = if (holder.sheetContent == ChildStackHolder.SheetContent.Upcoming) 100.dp else 0.dp,
+            sheetPeekHeight = remember(holder.sheetContent) {
+                if (holder.sheetContent == ChildStackHolder.SheetContent.Upcoming) 100.dp else 0.dp
+            },
+            sheetSwipeEnabled = false
         )
     }
 }
@@ -86,16 +94,12 @@ internal fun HandleChildState(
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun Modifier.bottomSheetScrim(
     sheetState: SheetState,
-    onDismiss: () -> Unit,
-): Modifier = composed {
-    background(
-        when (sheetState.currentValue) {
-            SheetValue.Expanded -> Color.Black.copy(alpha = .4f)
-            SheetValue.Hidden, SheetValue.PartiallyExpanded -> Color.Unspecified
-        }
-    ).run {
-        if (sheetState.currentValue == SheetValue.Expanded) {
-            pointerInput(Unit) { onDismiss() }
-        } else this
-    }
+): Modifier {
+    return this
+        .background(
+            when (sheetState.currentValue) {
+                SheetValue.Expanded -> Color.Black.copy(alpha = .3f)
+                SheetValue.Hidden, SheetValue.PartiallyExpanded -> Color.Unspecified
+            }
+        )
 }

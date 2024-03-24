@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.SharedFlow
 
 @Stable
 public class ChildStackHolder internal constructor(
-    private val index: Int
+    private val index: Int,
+    private val parenHolder: StackHolder
 ) {
 
     private val _sheetState = MutableSharedFlow<SheetState>()
@@ -37,6 +38,10 @@ public class ChildStackHolder internal constructor(
     internal suspend fun hide() {
         _sheetContent.value = SheetContent.Hidden
         _sheetState.emit(SheetState.Hidden)
+    }
+
+    internal suspend fun dismissSheet() {
+        parenHolder.goPrevious()
     }
 
     internal enum class SheetState {

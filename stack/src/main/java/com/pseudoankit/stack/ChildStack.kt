@@ -4,12 +4,14 @@ package com.pseudoankit.stack
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.pseudoankit.stack.model.ChildStackHolder
 import com.pseudoankit.stack.model.StackScope
 import com.pseudoankit.stack.ui.child.BottomSheetChildStackInternal
 import com.pseudoankit.stack.ui.child.ChildStackCore
 import com.pseudoankit.stack.ui.child.SimpleChildStackInternal
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,9 +44,14 @@ public fun StackScope.BottomSheetChildStack(
     next: @Composable () -> Unit,
     content: @Composable () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     BottomSheetChildStackInternal(
         modifier = modifier,
-        holder = holder
+        holder = holder,
+        onDismiss = {
+            coroutineScope.launch { holder.dismissSheet() }
+        }
     ) {
         ChildStackCore(holder, previous, next, content)
     }

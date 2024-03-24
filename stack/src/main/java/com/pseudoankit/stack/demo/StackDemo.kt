@@ -74,8 +74,6 @@ private fun StackScope.ChildStack(
     onNext: () -> Unit,
     onPrevious: () -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     BottomSheetChildStack(
         holder = holder,
         previous = {
@@ -90,19 +88,11 @@ private fun StackScope.ChildStack(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(onClick = {
-                coroutineScope.launch {
-                    onPrevious()
-                }
-            }) {
+            Button(onClick = onPrevious) {
                 Text(text = "Previous")
             }
             Text(text = "Step $step")
-            Button(onClick = {
-                coroutineScope.launch {
-                    onNext()
-                }
-            }) {
+            Button(onClick = onNext) {
                 Text(text = "Next")
             }
         }
