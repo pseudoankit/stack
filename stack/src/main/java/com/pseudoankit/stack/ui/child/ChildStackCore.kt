@@ -17,15 +17,14 @@ internal fun ColumnScope.ChildStackCore(
             backStackView()
         }
 
-        ChildStackHolder.SheetContent.Visible -> {}
+        ChildStackHolder.SheetContent.Visible -> {
+            content()
+        }
+
         ChildStackHolder.SheetContent.Upcoming -> {
             upcomingView()
         }
 
         ChildStackHolder.SheetContent.Hidden -> {}
-    }
-
-    if (holder.sheetContent != ChildStackHolder.SheetContent.Hidden) {
-        content()
     }
 }

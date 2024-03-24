@@ -4,6 +4,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.dp
+import com.pseudoankit.stack.util.Constant
+import com.pseudoankit.stack.util.Constant.BACKSTACK_VIEW_HEIGHT
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -20,7 +22,7 @@ public class ChildStackHolder internal constructor(
     private val _sheetContent = mutableStateOf(sheetContent)
     internal val sheetContent: SheetContent by _sheetContent
 
-    internal val topOffset = 100.dp * index
+    internal val topOffset = BACKSTACK_VIEW_HEIGHT * index
 
     internal suspend fun moveToBackStack() {
         _sheetContent.value = SheetContent.BackStack
@@ -44,6 +46,8 @@ public class ChildStackHolder internal constructor(
     internal suspend fun dismissSheet() {
         parenHolder.goPrevious()
     }
+
+    internal val peekHeight get() = if (sheetContent == SheetContent.Upcoming) Constant.UPCOMING_VIEW_HEIGHT else 0.dp
 
     internal enum class SheetState {
         Expanded,

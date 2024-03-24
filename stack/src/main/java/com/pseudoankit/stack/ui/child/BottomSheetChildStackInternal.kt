@@ -56,16 +56,18 @@ internal fun BottomSheetChildStackInternal(
         BottomSheetScaffold(
             content = {},
             sheetContent = {
-                Column(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 20.dp, start = 16.dp, end = 16.dp)
+                ) {
                     content()
                 }
             },
             modifier = modifier,
             scaffoldState = sheetScaffoldState,
             sheetDragHandle = null,
-            sheetPeekHeight = remember(holder.sheetContent) {
-                if (holder.sheetContent == ChildStackHolder.SheetContent.Upcoming) 100.dp else 0.dp
-            },
+            sheetPeekHeight = remember(holder.sheetContent) { holder.peekHeight },
             sheetSwipeEnabled = false
         )
     }
