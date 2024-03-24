@@ -4,9 +4,9 @@ import androidx.annotation.IntRange
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.Dp
-import com.pseudoankit.stack.util.Constant
-import com.pseudoankit.stack.util.Constant.MAX_CHILD_COUNT
-import com.pseudoankit.stack.util.Constant.MIN_CHILD_COUNT
+import com.pseudoankit.stack.util.StackDefault
+import com.pseudoankit.stack.util.StackDefault.MAX_CHILD_COUNT
+import com.pseudoankit.stack.util.StackDefault.MIN_CHILD_COUNT
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 @Composable
 public fun rememberStackHolder(
     @IntRange(MIN_CHILD_COUNT, MAX_CHILD_COUNT) childCount: Int,
-    backStackViewHeight: Dp = Constant.BACKSTACK_VIEW_HEIGHT,
-    upcomingViewHeight: Dp = Constant.UPCOMING_VIEW_HEIGHT,
+    backStackViewHeight: Dp = StackDefault.BACKSTACK_VIEW_HEIGHT,
+    upcomingViewHeight: Dp = StackDefault.UPCOMING_VIEW_HEIGHT,
 ): StackHolder {
     return StackHolder(
         childCount = childCount,
@@ -44,14 +44,13 @@ public class StackHolder internal constructor(
 
     private val childStackHolders = List(childCount, ::buildChild)
 
-    internal val root: ChildStackHolder = buildChild(0)
     public val first: ChildStackHolder = getChild(0)
     public val second: ChildStackHolder = getChild(1)
     public val third: ChildStackHolder = getChild(2)
     public val fourth: ChildStackHolder = getChild(3)
 
-    internal suspend fun show() {
-        updateChildHolders()
+    public suspend fun show() {
+        goNext()
     }
 
     public suspend fun goNext() {
@@ -71,19 +70,13 @@ public class StackHolder internal constructor(
 
     private suspend fun updateChildHolders() {
         if (activeChildIndex == -1) {
-            root.show()
-            childStackHolders.mapIndexed { index, childStackHolder ->
-                if (index == 0) {
-                    childStackHolder.moveToUpcoming()
-                } else {
-                    childStackHolder.hide()
-                }
+            childStackHolders.forEach { childStackHolder ->
+                childStackHolder.hide()
             }
             return
         }
 
         coroutineScope {
-            launch { root.moveToBackStack() }
             launch { childStackHolders.getOrNull(activeChildIndex - 1)?.moveToBackStack() }
             launch { childStackHolders.getOrNull(activeChildIndex)?.show() }
             launch { childStackHolders.getOrNull(activeChildIndex + 1)?.moveToUpcoming() }

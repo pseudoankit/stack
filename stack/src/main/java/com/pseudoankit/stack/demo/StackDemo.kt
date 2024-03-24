@@ -1,5 +1,6 @@
 package com.pseudoankit.stack.demo
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,14 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.pseudoankit.stack.BackStackView
 import com.pseudoankit.stack.BottomSheetChildStack
 import com.pseudoankit.stack.ChildSheetContent
-import com.pseudoankit.stack.Root
 import com.pseudoankit.stack.Stack
 import com.pseudoankit.stack.UpcomingView
 import com.pseudoankit.stack.model.ChildStackHolder
+import com.pseudoankit.stack.model.StackHolder
 import com.pseudoankit.stack.model.StackScope
 import com.pseudoankit.stack.model.rememberStackHolder
 import kotlinx.coroutines.launch
@@ -34,53 +37,55 @@ public fun StackDemo() {
         coroutineScope.launch { stackHolder.goPrevious() }
     }
 
-    Stack(
-        holder = stackHolder,
-        children = {
-            BottomSheet(
-                holder = stackHolder.first,
-                "First",
-                onNext = next,
-                onPrevious = previous
-            )
-            BottomSheet(
-                holder = stackHolder.second,
-                "Second",
-                onNext = next,
-                onPrevious = previous
-            )
-            BottomSheet(
-                holder = stackHolder.third,
-                "Third",
-                onNext = next,
-                onPrevious = previous
-            )
-            BottomSheet(
-                holder = stackHolder.fourth,
-                "Fourth",
-                onNext = next,
-                onPrevious = previous
-            )
-        }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Root(
-            backStackView = {
-                BackStackView {
-                    Text(text = "Moved First at Backstack")
-                }
-            },
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(text = "Root")
-                Button(onClick = next) {
-                    Text(text = "Go Next")
-                }
-            }
+        Text(text = "Root Screen")
+        Button(onClick = {
+            coroutineScope.launch { stackHolder.show() }
+        }) {
+            Text(text = "Show Stack")
         }
+    }
+
+    PlotStack(
+        stackHolder = stackHolder,
+        next = next,
+        previous = previous
+    )
+}
+
+@Composable
+private fun PlotStack(stackHolder: StackHolder, next: () -> Unit, previous: () -> Unit) {
+    Stack(
+        holder = stackHolder
+    ) {
+        BottomSheet(
+            holder = stackHolder.first,
+            "First",
+            onNext = next,
+            onPrevious = previous
+        )
+        BottomSheet(
+            holder = stackHolder.second,
+            "Second",
+            onNext = next,
+            onPrevious = previous
+        )
+        BottomSheet(
+            holder = stackHolder.third,
+            "Third",
+            onNext = next,
+            onPrevious = previous
+        )
+        BottomSheet(
+            holder = stackHolder.fourth,
+            "Fourth",
+            onNext = next,
+            onPrevious = previous
+        )
     }
 }
 
@@ -94,12 +99,14 @@ private fun StackScope.BottomSheet(
         holder = holder,
         backStackView = {
             BackStackView {
-                Text(text = "$step at Backstack")
+                Text(text = "$step at Backstack", color = Color.White, fontSize = 22.sp)
             }
         },
         upcomingView = {
-            UpcomingView {
-                Text(text = "$step at queue")
+            UpcomingView(
+                modifier = Modifier.background(Color.Blue)
+            ) {
+                Text(text = "$step in queue", color = Color.White)
             }
         }
     ) {

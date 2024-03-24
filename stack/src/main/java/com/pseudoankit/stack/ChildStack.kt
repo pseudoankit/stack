@@ -1,7 +1,6 @@
 package com.pseudoankit.stack
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -10,27 +9,8 @@ import com.pseudoankit.stack.model.StackScope
 import com.pseudoankit.stack.ui.child.BottomSheetChildStackInternal
 import com.pseudoankit.stack.ui.child.ChildStackCore
 import com.pseudoankit.stack.ui.child.CoreChildView
+import com.pseudoankit.stack.util.StackDefault
 import kotlinx.coroutines.launch
-
-@Composable
-public fun StackScope.Root(
-    modifier: Modifier = Modifier,
-    backStackView: @Composable () -> Unit,
-    content: @Composable () -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .then(modifier)
-    ) {
-        ChildStackCore(
-            holder = holder.root,
-            backStackView = backStackView,
-            content = content,
-            upcomingView = {}
-        )
-    }
-}
 
 @Composable
 public fun StackScope.BottomSheetChildStack(
@@ -63,7 +43,7 @@ public fun StackScope.BackStackView(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    CoreChildView(modifier, content)
+    CoreChildView(modifier.height(StackDefault.BACKSTACK_VIEW_HEIGHT), content)
 }
 
 @Composable
@@ -71,7 +51,7 @@ public fun StackScope.UpcomingView(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    CoreChildView(modifier, content)
+    CoreChildView(modifier.height(StackDefault.UPCOMING_VIEW_HEIGHT), content)
 }
 
 @Composable

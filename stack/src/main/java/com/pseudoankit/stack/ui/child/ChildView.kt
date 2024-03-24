@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.pseudoankit.stack.util.Constant
+import com.pseudoankit.stack.util.StackDefault
 
 @Composable
 internal fun CoreChildView(
@@ -16,7 +16,7 @@ internal fun CoreChildView(
         modifier = Modifier
             .fillMaxWidth()
             .then(modifier)
-            .padding(Constant.BS_CONTENT_TOP_PADDING)
+            .padding(StackDefault.BS_CONTENT_TOP_PADDING)
     ) {
         content()
     }
