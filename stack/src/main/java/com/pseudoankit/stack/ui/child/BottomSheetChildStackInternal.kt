@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.pseudoankit.stack.model.ChildStackHolder
+import com.pseudoankit.stack.util.Constant
 import com.pseudoankit.stack.util.clickable
 import kotlinx.coroutines.flow.collectLatest
 
@@ -50,7 +51,7 @@ internal fun BottomSheetChildStackInternal(
             .bottomSheetScrim(
                 sheetState = sheetScaffoldState.bottomSheetState,
             )
-            .padding(top = 35.dp)
+            .padding(top = Constant.BS_TOP_OFFSET)
             .padding(top = holder.topOffset)
     ) {
         BottomSheetScaffold(
