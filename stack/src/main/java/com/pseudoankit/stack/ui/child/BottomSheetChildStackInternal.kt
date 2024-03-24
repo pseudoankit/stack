@@ -57,9 +57,7 @@ internal fun BottomSheetChildStackInternal(
             content = {},
             sheetContent = {
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 20.dp, start = 16.dp, end = 16.dp)
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     content()
                 }
@@ -68,7 +66,9 @@ internal fun BottomSheetChildStackInternal(
             scaffoldState = sheetScaffoldState,
             sheetDragHandle = null,
             sheetPeekHeight = remember(holder.sheetContent) { holder.peekHeight },
-            sheetSwipeEnabled = false
+            sheetSwipeEnabled = false,
+            sheetShadowElevation = 5.dp,
+            sheetTonalElevation = 5.dp
         )
     }
 }
