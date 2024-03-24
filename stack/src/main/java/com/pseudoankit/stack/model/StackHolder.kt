@@ -21,7 +21,6 @@ public fun rememberStackHolder(
 public class StackHolder internal constructor(
     internal val childCount: Int
 ) {
-
     init {
         require(childCount in MIN_CHILD_COUNT..MAX_CHILD_COUNT) {
             "Child count of stack must be in range of $MIN_CHILD_COUNT .. $MAX_CHILD_COUNT"
@@ -35,6 +34,11 @@ public class StackHolder internal constructor(
 
     private val childStackHolders = List(childCount) { ChildStackHolder(it, this) }
 
+    internal val root: ChildStackHolder = ChildStackHolder(
+        index = 0,
+        parenHolder = this,
+        sheetContent = ChildStackHolder.SheetContent.Visible
+    )
     public val first: ChildStackHolder = getChild(0)
     public val second: ChildStackHolder = getChild(1)
     public val third: ChildStackHolder = getChild(2)
@@ -57,8 +61,13 @@ public class StackHolder internal constructor(
 
     private suspend fun updateChildHolders() {
         if (activeChildIndex == -1) {
+            root.show()
             childStackHolders.forEach { it.hide() }
             return
+        }
+
+        if (activeChildIndex == 0) {
+            root.moveToBackStack()
         }
 
         coroutineScope {
@@ -69,7 +78,7 @@ public class StackHolder internal constructor(
         }
     }
 
-    internal fun getChild(idx: Int): ChildStackHolder {
+    private fun getChild(idx: Int): ChildStackHolder {
         require(idx < childCount) {
             "Child ${idx + 1} in stack do not exist, bcz you have specified $childCount child only."
         }

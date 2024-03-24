@@ -7,19 +7,19 @@ import com.pseudoankit.stack.model.ChildStackHolder
 @Composable
 internal fun ColumnScope.ChildStackCore(
     holder: ChildStackHolder,
-    previous: @Composable () -> Unit,
-    next: @Composable () -> Unit,
+    backStackView: @Composable () -> Unit,
+    upcomingView: @Composable () -> Unit,
     content: @Composable () -> Unit,
 ) {
 
     when (holder.sheetContent) {
         ChildStackHolder.SheetContent.BackStack -> {
-            previous()
+            backStackView()
         }
 
         ChildStackHolder.SheetContent.Visible -> {}
         ChildStackHolder.SheetContent.Upcoming -> {
-            next()
+            upcomingView()
         }
 
         ChildStackHolder.SheetContent.Hidden -> {}

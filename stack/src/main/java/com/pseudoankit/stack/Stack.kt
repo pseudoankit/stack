@@ -10,11 +10,13 @@ import com.pseudoankit.stack.ui.parent.StackInternal
 public fun Stack(
     holder: StackHolder,
     modifier: Modifier = Modifier,
+    children: @Composable StackScope.() -> Unit,
     content: @Composable StackScope.() -> Unit
 ) {
     StackInternal(
         holder = holder,
         modifier = modifier,
-        content = content
+        content = content,
+        children = children
     )
 }

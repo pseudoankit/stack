@@ -10,13 +10,14 @@ import kotlinx.coroutines.flow.SharedFlow
 @Stable
 public class ChildStackHolder internal constructor(
     private val index: Int,
-    private val parenHolder: StackHolder
+    private val parenHolder: StackHolder,
+    sheetContent: SheetContent = SheetContent.Hidden
 ) {
 
     private val _sheetState = MutableSharedFlow<SheetState>()
     internal val sheetState: SharedFlow<SheetState> get() = _sheetState
 
-    private val _sheetContent = mutableStateOf(SheetContent.Hidden)
+    private val _sheetContent = mutableStateOf(sheetContent)
     internal val sheetContent: SheetContent by _sheetContent
 
     internal val topOffset = 100.dp * index

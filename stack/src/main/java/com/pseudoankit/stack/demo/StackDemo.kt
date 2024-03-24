@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.pseudoankit.stack.BottomSheetChildStack
+import com.pseudoankit.stack.Root
 import com.pseudoankit.stack.Stack
 import com.pseudoankit.stack.model.ChildStackHolder
 import com.pseudoankit.stack.model.StackScope
@@ -30,52 +31,69 @@ public fun StackDemo() {
         coroutineScope.launch { stackHolder.goPrevious() }
     }
 
-    Button(onClick = next) {
-        Text(text = "Launch")
-    }
-
     Stack(
-        holder = stackHolder
+        holder = stackHolder,
+        children = {
+            BottomSheet(
+                holder = stackHolder.first,
+                "First",
+                onNext = next,
+                onPrevious = previous
+            )
+            BottomSheet(
+                holder = stackHolder.second,
+                "Second",
+                onNext = next,
+                onPrevious = previous
+            )
+            BottomSheet(
+                holder = stackHolder.third,
+                "Third",
+                onNext = next,
+                onPrevious = previous
+            )
+            BottomSheet(
+                holder = stackHolder.fourth,
+                "Fourth",
+                onNext = next,
+                onPrevious = previous
+            )
+        }
     ) {
-        ChildStack(
-            holder = stackHolder.first,
-            "First",
-            onNext = next,
-            onPrevious = previous
-        )
-        ChildStack(
-            holder = stackHolder.second,
-            "Second",
-            onNext = next,
-            onPrevious = previous
-        )
-        ChildStack(
-            holder = stackHolder.third,
-            "Third",
-            onNext = next,
-            onPrevious = previous
-        )
-        ChildStack(
-            holder = stackHolder.fourth,
-            "Fourth",
-            onNext = next,
-            onPrevious = previous
-        )
+        Root(
+            backStackView = {
+                Text(text = "First at Backstack")
+            },
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(onClick = previous) {
+                    Text(text = "Previous")
+                }
+                Text(text = "Root")
+                Button(onClick = next) {
+                    Text(text = "Next")
+                }
+            }
+        }
     }
 }
 
 @Composable
-private fun StackScope.ChildStack(
+private fun StackScope.BottomSheet(
     holder: ChildStackHolder, step: String,
     onNext: () -> Unit,
     onPrevious: () -> Unit
 ) {
     BottomSheetChildStack(
         holder = holder,
-        previous = {
+        backStackView = {
             Text(text = "$step at Backstack")
         },
-        next = {
+        upcomingView = {
             Text(text = "$step at queue")
         }
     ) {
