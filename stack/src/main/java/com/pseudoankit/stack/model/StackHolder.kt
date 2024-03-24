@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Dp
 import com.pseudoankit.stack.util.StackDefault
@@ -21,11 +22,13 @@ public fun rememberStackHolder(
     backStackViewHeight: Dp = StackDefault.backstackViewHeight,
     upcomingViewHeight: Dp = StackDefault.upcomingViewHeight,
 ): StackHolder {
-    return StackHolder(
-        childCount = childCount,
-        backStackViewHeight = backStackViewHeight,
-        upcomingViewHeight = upcomingViewHeight
-    )
+    return remember {
+        StackHolder(
+            childCount = childCount,
+            backStackViewHeight = backStackViewHeight,
+            upcomingViewHeight = upcomingViewHeight
+        )
+    }
 }
 
 @Stable

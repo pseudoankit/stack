@@ -118,7 +118,8 @@ private fun StackScope.BottomSheet(
         },
         upcomingView = {
             UpcomingView(
-                modifier = Modifier.background(Color.Blue)
+                modifier = Modifier.background(Color.Blue),
+                onClick = onNext
             ) {
                 Text(text = "$step in queue", color = Color.White)
             }

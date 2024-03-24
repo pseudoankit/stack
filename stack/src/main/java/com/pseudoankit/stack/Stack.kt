@@ -35,7 +35,7 @@ public fun Stack(
 }
 
 @Composable
-public fun Header(
+public fun StackScope.Header(
     modifier: Modifier = Modifier,
     showCloseButton: Boolean = true,
     onCloseClicked: () -> Unit,
@@ -50,10 +50,10 @@ public fun Header(
 }
 
 @Composable
-internal fun HeaderItem(
+public fun StackScope.HeaderItem(
     icon: ImageVector,
+    contentDescription: String = "",
     onClick: () -> Unit,
-    contentDescription: String = ""
 ) {
     HeaderItemInternal(icon = icon, onClick = onClick, contentDescription = contentDescription)
 }
