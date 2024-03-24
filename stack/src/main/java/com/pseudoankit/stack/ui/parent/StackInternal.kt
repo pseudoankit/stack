@@ -3,6 +3,7 @@ package com.pseudoankit.stack.ui.parent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.pseudoankit.stack.model.StackHolder
@@ -19,6 +20,10 @@ internal fun StackInternal(
 
     val stackScope = remember(holder) {
         stackScope(holder)
+    }
+
+    LaunchedEffect(Unit) {
+        holder.show()
     }
 
     Box(

@@ -44,11 +44,15 @@ public class StackHolder internal constructor(
 
     private val childStackHolders = List(childCount, ::buildChild)
 
-    internal val root: ChildStackHolder = buildChild(0, ChildStackHolder.SheetContent.Visible)
+    internal val root: ChildStackHolder = buildChild(0)
     public val first: ChildStackHolder = getChild(0)
     public val second: ChildStackHolder = getChild(1)
     public val third: ChildStackHolder = getChild(2)
     public val fourth: ChildStackHolder = getChild(3)
+
+    internal suspend fun show() {
+        updateChildHolders()
+    }
 
     public suspend fun goNext() {
         activeChildIndex++
@@ -68,15 +72,18 @@ public class StackHolder internal constructor(
     private suspend fun updateChildHolders() {
         if (activeChildIndex == -1) {
             root.show()
-            childStackHolders.forEach { it.hide() }
+            childStackHolders.mapIndexed { index, childStackHolder ->
+                if (index == 0) {
+                    childStackHolder.moveToUpcoming()
+                } else {
+                    childStackHolder.hide()
+                }
+            }
             return
         }
 
-        if (activeChildIndex == 0) {
-            root.moveToBackStack()
-        }
-
         coroutineScope {
+            launch { root.moveToBackStack() }
             launch { childStackHolders.getOrNull(activeChildIndex - 1)?.moveToBackStack() }
             launch { childStackHolders.getOrNull(activeChildIndex)?.show() }
             launch { childStackHolders.getOrNull(activeChildIndex + 1)?.moveToUpcoming() }
@@ -86,14 +93,12 @@ public class StackHolder internal constructor(
 
     private fun buildChild(
         index: Int,
-        sheetContent: ChildStackHolder.SheetContent = ChildStackHolder.SheetContent.Hidden,
     ): ChildStackHolder {
         return ChildStackHolder(
             index = index,
             parenHolder = this,
             backStackViewHeight = backStackViewHeight,
             upcomingViewHeight = upcomingViewHeight,
-            sheetContent = sheetContent
         )
     }
 

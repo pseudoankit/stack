@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.SharedFlow
 public class ChildStackHolder internal constructor(
     private val index: Int,
     private val parenHolder: StackHolder,
-    sheetContent: SheetContent = SheetContent.Hidden,
     private val backStackViewHeight: Dp,
     private val upcomingViewHeight: Dp,
 ) {
@@ -20,7 +19,7 @@ public class ChildStackHolder internal constructor(
     private val _sheetState = MutableSharedFlow<SheetState>()
     internal val sheetState: SharedFlow<SheetState> get() = _sheetState
 
-    private val _sheetContent = mutableStateOf(sheetContent)
+    private val _sheetContent = mutableStateOf(SheetContent.Hidden)
     internal val sheetContent: SheetContent by _sheetContent
 
     internal val topOffset = backStackViewHeight * index
