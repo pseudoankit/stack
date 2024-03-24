@@ -3,14 +3,16 @@ package com.pseudoankit.stack.model
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.pseudoankit.stack.util.StackDefault
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 @Stable
 public class ChildStackHolder internal constructor(
-    private val index: Int,
+    internal val index: Int,
     private val parenHolder: StackHolder,
     private val backStackViewHeight: Dp,
     private val upcomingViewHeight: Dp,
@@ -22,7 +24,10 @@ public class ChildStackHolder internal constructor(
     private val _sheetContent = mutableStateOf(SheetContent.Hidden)
     internal val sheetContent: SheetContent by _sheetContent
 
-    internal val topOffset = backStackViewHeight * index
+    internal val topOffset = backStackViewHeight * (index - 1).coerceAtLeast(0)
+    internal val topOffsetInScrim = if (index == 0) 0.dp else backStackViewHeight
+    internal val scrimColor = if (index == 0) Color.Unspecified else StackDefault.bsScrimColor
+
 
     internal suspend fun moveToBackStack() {
         _sheetContent.value = SheetContent.BackStack

@@ -43,7 +43,7 @@ public fun StackScope.BackStackView(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    CoreChildView(modifier.height(StackDefault.BACKSTACK_VIEW_HEIGHT), content)
+    CoreChildView(modifier.height(StackDefault.backstackViewHeight), content)
 }
 
 @Composable
@@ -51,7 +51,7 @@ public fun StackScope.UpcomingView(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    CoreChildView(modifier.height(StackDefault.UPCOMING_VIEW_HEIGHT), content)
+    CoreChildView(modifier.height(StackDefault.upcomingViewHeight), content)
 }
 
 @Composable

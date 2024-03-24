@@ -16,7 +16,7 @@ internal fun CoreChildView(
         modifier = Modifier
             .fillMaxWidth()
             .then(modifier)
-            .padding(StackDefault.BS_CONTENT_TOP_PADDING)
+            .padding(StackDefault.bsContentTopPadding)
     ) {
         content()
     }

@@ -22,6 +22,12 @@ internal fun Dp.toPx(density: Density): Float {
     }
 }
 
+internal fun Int.pxToDp(density: Density): Dp {
+    return with(density) {
+        return@with toDp()
+    }
+}
+
 internal fun Modifier.clickable(
     enabled: Boolean = true,
     showRipple: Boolean = true,

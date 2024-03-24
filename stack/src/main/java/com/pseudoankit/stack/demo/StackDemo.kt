@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.pseudoankit.stack.BackStackView
 import com.pseudoankit.stack.BottomSheetChildStack
 import com.pseudoankit.stack.ChildSheetContent
+import com.pseudoankit.stack.Header
 import com.pseudoankit.stack.Stack
 import com.pseudoankit.stack.UpcomingView
 import com.pseudoankit.stack.model.ChildStackHolder
@@ -53,14 +54,27 @@ public fun StackDemo() {
     PlotStack(
         stackHolder = stackHolder,
         next = next,
-        previous = previous
+        previous = previous,
+        onCloseClicked = {
+            coroutineScope.launch { stackHolder.close() }
+        }
     )
 }
 
 @Composable
-private fun PlotStack(stackHolder: StackHolder, next: () -> Unit, previous: () -> Unit) {
+private fun PlotStack(
+    stackHolder: StackHolder,
+    next: () -> Unit,
+    previous: () -> Unit,
+    onCloseClicked: () -> Unit
+) {
     Stack(
-        holder = stackHolder
+        holder = stackHolder,
+        header = {
+            Header(
+                onCloseClicked = onCloseClicked
+            )
+        }
     ) {
         BottomSheet(
             holder = stackHolder.first,

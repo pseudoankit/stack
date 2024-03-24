@@ -3,10 +3,13 @@ package com.pseudoankit.stack.model
 import androidx.annotation.IntRange
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Dp
 import com.pseudoankit.stack.util.StackDefault
-import com.pseudoankit.stack.util.StackDefault.MAX_CHILD_COUNT
-import com.pseudoankit.stack.util.StackDefault.MIN_CHILD_COUNT
+import com.pseudoankit.stack.util.StackDefault.maxChildCount
+import com.pseudoankit.stack.util.StackDefault.minChildCount
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -14,9 +17,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 public fun rememberStackHolder(
-    @IntRange(MIN_CHILD_COUNT, MAX_CHILD_COUNT) childCount: Int,
-    backStackViewHeight: Dp = StackDefault.BACKSTACK_VIEW_HEIGHT,
-    upcomingViewHeight: Dp = StackDefault.UPCOMING_VIEW_HEIGHT,
+    @IntRange(minChildCount, maxChildCount) childCount: Int,
+    backStackViewHeight: Dp = StackDefault.backstackViewHeight,
+    upcomingViewHeight: Dp = StackDefault.upcomingViewHeight,
 ): StackHolder {
     return StackHolder(
         childCount = childCount,
@@ -32,13 +35,14 @@ public class StackHolder internal constructor(
     private val upcomingViewHeight: Dp,
 ) {
     init {
-        require(childCount in MIN_CHILD_COUNT..MAX_CHILD_COUNT) {
-            "Child count of stack must be in range of $MIN_CHILD_COUNT .. $MAX_CHILD_COUNT"
+        require(childCount in minChildCount..maxChildCount) {
+            "Child count of stack must be in range of $minChildCount .. $maxChildCount"
         }
     }
 
     private var activeChildIndex = -1
         set(value) {
+            isVisible = value >= 0
             field = value.coerceAtMost(childCount - 1)
         }
 
@@ -48,6 +52,9 @@ public class StackHolder internal constructor(
     public val second: ChildStackHolder = getChild(1)
     public val third: ChildStackHolder = getChild(2)
     public val fourth: ChildStackHolder = getChild(3)
+
+    internal var isVisible by mutableStateOf(false)
+        private set
 
     public suspend fun show() {
         goNext()

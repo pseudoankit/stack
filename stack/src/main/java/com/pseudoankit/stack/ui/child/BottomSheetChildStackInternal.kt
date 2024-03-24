@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
@@ -16,11 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.pseudoankit.stack.model.ChildStackHolder
-import com.pseudoankit.stack.util.StackDefault
-import com.pseudoankit.stack.util.StackDefault.SCRIM_COLOR
 import com.pseudoankit.stack.util.clickable
 import kotlinx.coroutines.flow.collectLatest
 
@@ -32,6 +32,7 @@ internal fun BottomSheetChildStackInternal(
     onDismiss: () -> Unit,
     content: @Composable (ColumnScope.() -> Unit),
 ) {
+    val sheetShape = BottomSheetDefaults.ExpandedShape
     val sheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
             initialValue = SheetValue.Hidden,
@@ -49,11 +50,13 @@ internal fun BottomSheetChildStackInternal(
                     clickable(showRipple = false, onClick = onDismiss)
                 } else this
             }
+            .padding(top = holder.topOffset)
+            .clip(sheetShape)
             .bottomSheetScrim(
                 sheetState = sheetScaffoldState.bottomSheetState,
+                scrimColor = holder.scrimColor
             )
-            .padding(top = StackDefault.BS_TOP_OFFSET)
-            .padding(top = holder.topOffset)
+            .padding(top = holder.topOffsetInScrim)
     ) {
         BottomSheetScaffold(
             content = {},
@@ -72,7 +75,8 @@ internal fun BottomSheetChildStackInternal(
             sheetPeekHeight = remember(holder.sheetContent) { holder.peekHeight },
             sheetSwipeEnabled = false,
             sheetShadowElevation = 5.dp,
-            sheetTonalElevation = 5.dp
+            sheetTonalElevation = 5.dp,
+            sheetShape = sheetShape
         )
     }
 }
@@ -101,11 +105,12 @@ internal fun HandleChildState(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun Modifier.bottomSheetScrim(
     sheetState: SheetState,
+    scrimColor: Color,
 ): Modifier {
     return this
         .background(
             when (sheetState.currentValue) {
-                SheetValue.Expanded -> SCRIM_COLOR
+                SheetValue.Expanded -> scrimColor
                 SheetValue.Hidden, SheetValue.PartiallyExpanded -> Color.Unspecified
             }
         )

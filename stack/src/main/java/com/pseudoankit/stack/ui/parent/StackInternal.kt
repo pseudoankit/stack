@@ -1,6 +1,7 @@
 package com.pseudoankit.stack.ui.parent
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -13,18 +14,23 @@ import com.pseudoankit.stack.model.stackScope
 internal fun StackInternal(
     holder: StackHolder,
     modifier: Modifier = Modifier,
-    content: @Composable StackScope.() -> Unit,
+    content: @Composable (StackScope.() -> Unit),
+    header: @Composable (StackScope.() -> Unit),
 ) {
-
     val stackScope = remember(holder) {
         stackScope(holder)
     }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .then(modifier)
     ) {
-        content(stackScope)
+        if (holder.isVisible) {
+            header(stackScope)
+        }
+        Box {
+            content(stackScope)
+        }
     }
 }
