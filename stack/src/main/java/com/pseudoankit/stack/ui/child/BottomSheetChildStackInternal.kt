@@ -50,6 +50,7 @@ internal fun BottomSheetChildStackInternal(
             .bottomSheetScrim(
                 sheetState = sheetScaffoldState.bottomSheetState,
             )
+            .padding(top = 35.dp)
             .padding(top = holder.topOffset)
     ) {
         BottomSheetScaffold(

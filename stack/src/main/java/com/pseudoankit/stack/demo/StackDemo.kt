@@ -30,11 +30,7 @@ public fun StackDemo() {
         coroutineScope.launch { stackHolder.goPrevious() }
     }
 
-    Button(onClick = {
-        coroutineScope.launch {
-            stackHolder.goNext()
-        }
-    }) {
+    Button(onClick = next) {
         Text(text = "Launch")
     }
 
@@ -96,7 +92,5 @@ private fun StackScope.ChildStack(
                 Text(text = "Next")
             }
         }
-
-
     }
 }
