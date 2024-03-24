@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.pseudoankit.stack.util.StackDefault
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -26,7 +25,11 @@ public class ChildStackHolder internal constructor(
 
     internal val topOffset = backStackViewHeight * (index - 1).coerceAtLeast(0)
     internal val topOffsetInScrim = if (index == 0) 0.dp else backStackViewHeight
-    internal val scrimColor = if (index == 0) Color.Unspecified else StackDefault.bsScrimColor
+    internal val scrimColor = if (index == 0) {
+        Color.Unspecified
+    } else {
+        Color.Black.copy(alpha = (.4f / index))
+    }
 
 
     internal suspend fun moveToBackStack() {

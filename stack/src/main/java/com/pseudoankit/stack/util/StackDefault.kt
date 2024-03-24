@@ -1,6 +1,5 @@
 package com.pseudoankit.stack.util
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 internal object StackDefault {
@@ -12,7 +11,6 @@ internal object StackDefault {
 
     val bsContentTopPadding = 24.dp
     val bsContentHorizontalPadding = 24.dp
-    val bsScrimColor get() = Color.Black.copy(alpha = .4f)
 
     val headerPadding = 16.dp
 }
