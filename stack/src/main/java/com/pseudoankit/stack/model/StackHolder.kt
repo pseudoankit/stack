@@ -3,6 +3,8 @@ package com.pseudoankit.stack.model
 import androidx.annotation.IntRange
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.unit.Dp
+import com.pseudoankit.stack.util.Constant
 import com.pseudoankit.stack.util.Constant.MAX_CHILD_COUNT
 import com.pseudoankit.stack.util.Constant.MIN_CHILD_COUNT
 import kotlinx.coroutines.coroutineScope
@@ -12,14 +14,22 @@ import kotlinx.coroutines.launch
 
 @Composable
 public fun rememberStackHolder(
-    @IntRange(MIN_CHILD_COUNT, MAX_CHILD_COUNT) childCount: Int
+    @IntRange(MIN_CHILD_COUNT, MAX_CHILD_COUNT) childCount: Int,
+    backStackViewHeight: Dp = Constant.BACKSTACK_VIEW_HEIGHT,
+    upcomingViewHeight: Dp = Constant.UPCOMING_VIEW_HEIGHT,
 ): StackHolder {
-    return StackHolder(childCount = childCount)
+    return StackHolder(
+        childCount = childCount,
+        backStackViewHeight = backStackViewHeight,
+        upcomingViewHeight = upcomingViewHeight
+    )
 }
 
 @Stable
 public class StackHolder internal constructor(
-    internal val childCount: Int
+    internal val childCount: Int,
+    private val backStackViewHeight: Dp,
+    private val upcomingViewHeight: Dp,
 ) {
     init {
         require(childCount in MIN_CHILD_COUNT..MAX_CHILD_COUNT) {
@@ -32,13 +42,9 @@ public class StackHolder internal constructor(
             field = value.coerceAtMost(childCount - 1)
         }
 
-    private val childStackHolders = List(childCount) { ChildStackHolder(it, this) }
+    private val childStackHolders = List(childCount, ::buildChild)
 
-    internal val root: ChildStackHolder = ChildStackHolder(
-        index = 0,
-        parenHolder = this,
-        sheetContent = ChildStackHolder.SheetContent.Visible
-    )
+    internal val root: ChildStackHolder = buildChild(0, ChildStackHolder.SheetContent.Visible)
     public val first: ChildStackHolder = getChild(0)
     public val second: ChildStackHolder = getChild(1)
     public val third: ChildStackHolder = getChild(2)
@@ -76,6 +82,19 @@ public class StackHolder internal constructor(
             launch { childStackHolders.getOrNull(activeChildIndex + 1)?.moveToUpcoming() }
             launch { childStackHolders.getOrNull(activeChildIndex + 2)?.hide() }
         }
+    }
+
+    private fun buildChild(
+        index: Int,
+        sheetContent: ChildStackHolder.SheetContent = ChildStackHolder.SheetContent.Hidden,
+    ): ChildStackHolder {
+        return ChildStackHolder(
+            index = index,
+            parenHolder = this,
+            backStackViewHeight = backStackViewHeight,
+            upcomingViewHeight = upcomingViewHeight,
+            sheetContent = sheetContent
+        )
     }
 
     private fun getChild(idx: Int): ChildStackHolder {
