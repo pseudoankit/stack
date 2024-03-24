@@ -1,7 +1,6 @@
 package com.pseudoankit.stack.ui.child
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -20,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.pseudoankit.stack.model.ChildStackHolder
+import com.pseudoankit.stack.util.clickable
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +44,7 @@ internal fun BottomSheetChildStackInternal(
             .fillMaxSize()
             .run {
                 if (sheetScaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
-                    clickable(onClick = onDismiss)
+                    clickable(showRipple = false, onClick = onDismiss)
                 } else this
             }
             .bottomSheetScrim(
@@ -57,7 +57,9 @@ internal fun BottomSheetChildStackInternal(
             content = {},
             sheetContent = {
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(showRipple = false) {}
                 ) {
                     content()
                 }
